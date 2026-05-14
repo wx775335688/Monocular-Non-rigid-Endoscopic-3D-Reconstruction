@@ -1,0 +1,1 @@
+python ./test_single.py --ckpt pretrained/ckpt.pt --input_ply data/sparse_300.ply --output_npy ./output/sparse_300.npy --output_xyz output/sparse_300.xyz --height 480 --width 640

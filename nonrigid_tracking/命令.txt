@@ -1,0 +1,39 @@
+# NR-SLAM 改进版编译和运行命令
+# 解决点云精度低、数量少的核心问题
+
+## 1. 编译改进版 NR-SLAM
+cd /home/miccai/wx/修改/code/modifications/nr-slam
+./build.sh
+
+## 2. 运行改进版算法（选择其中之一）
+
+# 使用 endomapper 输出图片（推荐用于测试）
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./build/bin/endomapper --dataset_path /home/miccai/wx/data/two/two.mp4 --settings_path ./data/hamlyn_01/settings.yaml --starting_frame 0 --end_frame 100000
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./build/bin/endomapper --dataset_path /home/miccai/wx/data/left/left.mp4 --settings_path ./data/left/settings.yaml --starting_frame 0 --end_frame 100000
+
+
+# 使用 hamlyn 算法（如果有立体数据）
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./build/bin/hamlyn --dataset_path /home/miccai/wx/data/two/two.mp4 --settings_path ./data/hamlyn_01/settings.yaml --starting_frame 0 --end_frame 100000
+
+## 3. 分析改进效果
+cd /home/miccai/wx/修改/code/modifications/nr-slam
+python3 analyze_point_cloud_stats.py
+
+## 改进内容说明：
+# - 放宽关键帧插入频率（5->10帧）
+# - 放宽重投影误差阈值（5.99->15.0）
+# - 降低正则化连接数要求（0.3->0.15）
+# - 放宽特征跟踪阈值（提高点数）
+# - 保存所有可见状态的点云而非仅优化后点
+# - 添加详细的统计监控和趋势分析
+
+## 输出文件位置：
+# - 点云: output/data/point_clouds/
+# - 相机位姿: output/data/camera_poses/
+# - 跟踪统计: output/data/tracking_stats.csv
+# - 点云统计: output/data/point_clouds/point_cloud_statistics.csv
+# - 分析报告: output/analysis/
+
+######room
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./build/bin/endomapper --dataset_path /home/miccai/wx/data/room/room.mp4 --settings_path ./data/room/settings.yaml --starting_frame 0 --end_frame 100000
+

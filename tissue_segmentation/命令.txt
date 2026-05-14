@@ -1,0 +1,12 @@
+python segment_tissue.py --image /home/miccai/wx/data/left/cam/1.png --out /home/miccai/wx/data/sam-output/mask.json --checkpoint sam_vit_h_4b8939.pth --vis_dir /home/miccai/wx/data/sam-output/vis
+
+
+python segment_tissue.py --video /home/miccai/wx/data/two/two.mp4 --out /home/miccai/wx/data/sam-output/mask.json --checkpoint sam_vit_h_4b8939.pth --mode auto --auto_topk 6 --min_mask_area 1000 --vis_dir /home/miccai/wx/data/sam-output/vis
+
+
+python segment_tissue.py --video /home/miccai/wx/data/two/two.mp4 --out /home/miccai/wx/data/sam-output/mask.json --checkpoint sam_vit_h_4b8939.pth --mode auto --auto_topk 6 --track_iou 0.6 --vis_dir /home/miccai/wx/data/sam-output/vis
+
+python segment_tissue_sam2.py --video /home/miccai/wx/data/two/two.mp4 --out /home/miccai/wx/data/sam-output/mask.json --ckpt sam2.1_hiera_large.pt --vis_dir /home/miccai/wx/data/sam-output/vis2 --mode auto
+
+
+python segment_tissue_sam2.py   --video /home/miccai/wx/data/two/two.mp4   --out /home/miccai/wx/data/sam-output/masks.json   --ckpt sam2.1_hiera_small.pt   --config configs/sam2.1/sam2.1_hiera_s.yaml   --prompt_strategy auto --grid_size 3 --min_mask_area 50   --vos_optimized   --amp_dtype float16   --empty_cache_interval 1 --vis_dir /home/miccai/wx/data/sam-output/vis3 --auto_topk 4

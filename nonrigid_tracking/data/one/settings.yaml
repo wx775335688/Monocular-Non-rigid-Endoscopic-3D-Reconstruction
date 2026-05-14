@@ -1,0 +1,115 @@
+%YAML:1.0
+# FeatureType: "orb3"
+FeatureType:"shi_tomasi"
+# Camera model
+Camera.model: "PinHole"
+
+# Camera calibration and distortion parameters
+# Camera.fx: 435.2046959714599
+# Camera.fy: 435.2046959714599
+# Camera.cx: 367.4517211914062
+# Camera.cy: 252.2008514404297
+
+# Camera.fx: 751.706129
+# Camera.fy: 766.315580
+# Camera.cx: 338.665467
+# Camera.cy: 257.986032
+
+# Camera.k0: -0.328424
+# Camera.k1: 0.856059
+# Camera.k2: 0.003430
+# Camera.k3: 0.000248
+
+Camera.fx: 583.16
+Camera.fy: 583.24
+Camera.cx: 318.95
+Camera.cy: 255.44
+
+Camera.radiansPerPixel: 0.002
+
+# For stereo evaluation
+# Stereo.bf: 39.2778179991
+
+Masking.filterFile: "./data/hamlyn_01/filters.txt"
+
+Visualization.cameraSize: 0.1
+
+System.autoplay: 1
+
+# Set the below variables to valid paths to save outputs
+MapVisualizer.save_path: "/home/miccai/wx/NR-SLAM6.23/MapVisualizer/"
+ImageVisualizer.save_path: ""
+Evaluation.save_path: ""
+
+# 单目初始化深度与正则化（影响整体尺度与“扁平”程度）
+MonoInit.TargetMedianDepth: 6.0    # 典型场景深度（原来代码里是 3.0，可按实际远近调整）
+MonoInit.RegSigmaScale: 2.0         # 正则化强度系数，<3.0 会略减弱平滑，减轻压扁
+
+# 立体初始化深度与正则化（TrackImageWithStereo 时生效）
+# 这里沿用你之前代码中经验的深度范围 35.5~70.5，可按需要微调
+StereoInit.MinDepth: 35.5
+StereoInit.MaxDepth: 70.5
+StereoInit.PatternFocal: 3886.37    # 与 Stereo.bf 同量级，一般保持不变
+StereoInit.RegRadius: 10.5          # 空间正则化半径，减小会让形变更“自由”
+StereoInit.MapScale: 1.0            # 若整体比例仍偏扁或偏长，可在这里微调用
+
+# Marigold data export settings
+Marigold.export_enabled: 1
+Marigold.export_path: "/home/miccai/wx/修改/NR-SLAM6.23/data/marigold_export/"
+
+# Joint optimization fusion export settings (创新点1)
+OutputPerFrame: 1  # 新flag: 是否每帧输出JSON/PLY
+JSONPath: "./outputs/frame_%d.json"  # DDG/粘性输出路径
+PLYPath: "./outputs/sparse_%d.ply"   # 稀疏点云PLY路径
+
+# Tissue segmentation settings (创新点2)
+EnableHeterogeneousViscoelastic: 1  # 是否启用异质粘弹性参数
+# MaskJSONPath: 支持两种模式：
+#   1. 单文件模式: "./masks.json" - 所有帧数据在一个JSON文件中（向后兼容）
+#   2. 按帧保存模式: "./masks_frames" - 目录路径，包含 frame_*.json 文件（推荐，启动快）
+# 按帧保存模式：分割脚本会自动创建 masks_frames/ 目录，每帧保存为单独的 JSON 文件
+MaskJSONPath: "/home/miccai/wx/data/sam-output/one/masks_frames"  # SAM分割输出的mask JSON路径
+
+# Tissue parameter mapping (用于多类别组织)
+# 根据分割结果中的组织名称配置参数
+# 如果 JSON 中的组织名称是 organ_0, organ_1 等，需要在这里为每个组织配置 k 和 b 参数
+# k: 弹性系数（刚度），b: 粘性系数
+TissueParams:
+  # 示例：为分割结果中的组织配置参数
+  # 请根据实际分割结果中的组织名称（如 organ_0, organ_1）修改
+  default:
+    k: 1.0
+    b: 1.0
+  # organ_0:
+  #   k: 0.7   # 弹性系数，值越大越硬
+  #   b: 1.0   # 粘性系数，值越大粘性越大
+  # organ_1:
+  #   k: 0.7
+  #   b: 1.0
+  # organ_2:
+  #   k: 1.8
+  #   b: 0.4
+  # organ_3:
+  #   k: 1.8
+  #   b: 0.4
+  organ_18:
+    k: 0.7
+    b: 1.0
+
+MapVisualizer.left_view: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [ 0.951395, 0.206095,        0.22885, 1.33195,
+    -0.0010889,      -0.740829,       0.671693,        -1.64768,
+    0.307971,        -0.639294,       -0.704597,       -4.53994,
+          0.0,        0.0,        0.0,        1.0 ]
+
+MapVisualizer.right_view: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [ 0.890705, 0.062171,        -0.450309,       1.34814,
+    0.0263112,       -0.995994,       -0.0854666,      -0.24229,
+    -0.453819,       0.0642774,       -0.888773,       -3.60393,
+    0.0,          0.0,        0.0,        1.0 ]
