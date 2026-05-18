@@ -1,190 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Project page for Monocular Non-rigid Endoscopic 3D Reconstruction with Tissue-aware Heterogeneous Physical Priors." />
+  <meta property="og:title" content="Monocular Non-rigid Endoscopic 3D Reconstruction" />
+  <meta property="og:description" content="Dense and scale-consistent intraoperative point cloud generation from monocular endoscopic videos." />
+  <meta property="og:image" content="static/images/fig1_overview.png" />
   <title>Monocular Non-rigid Endoscopic 3D Reconstruction</title>
-  <meta name="description" content="Project page for monocular non-rigid endoscopic 3D reconstruction with tissue-aware heterogeneous physical priors." />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="static/css/style.css" />
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <a href="#overview">Overview</a>
-      <a href="#method">Method</a>
-      <a href="#experiments">Experiments</a>
-      <a href="#results">Results</a>
-      <a href="#resources">Resources</a>
-    </nav>
-
-    <div class="hero-inner">
-      <div class="badge">Monocular Endoscopy · Non-rigid 3D Reconstruction · Dense Point Clouds</div>
-      <h1>Monocular Non-rigid Endoscopic 3D Reconstruction with Tissue-aware Heterogeneous Physical Priors</h1>
-      <p class="subtitle">
-        A reconstruction method that couples non-rigid endoscopic tracking with physics-guided diffusion depth completion to recover denser and more scale-consistent intraoperative point clouds.
-      </p>
-      <p class="authors">Author Name · Institution</p>
-      <div class="button-row">
-        <a class="button primary" href="assets/paper/paper.pdf">Paper PDF</a>
-        <a class="button" href="assets/paper/paper.tex">LaTeX</a>
-        <a class="button" href="#citation">BibTeX</a>
-        <a class="button muted" href="#video-demo">Video Demo Placeholder</a>
+  <div class="top-nav">
+    <div class="top-nav-inner">
+      <div class="nav-brand">THPG Reconstruction</div>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#framework">Framework</a>
+        <a href="#setup">Experimental Setup</a>
+        <a href="#results">Quantitative Results</a>
+        <a href="#qualitative">Representative Data</a>
+        <a href="#analysis">Analysis</a>
       </div>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <section id="overview" class="section narrow">
-      <h2>Overview</h2>
-      <p>
-        Minimally invasive surgery requires reliable intraoperative geometry for image-guided applications, but monocular endoscopic reconstruction is difficult because soft tissue undergoes continuous non-rigid deformation. Sparse SLAM maps can support tracking, yet they usually provide limited surface coverage. Dense depth completion can improve coverage, but per-frame dense predictions may introduce scale-and-shift mismatch and cross-frame geometric inconsistency.
-      </p>
-      <p>
-        This project addresses dense and scale-consistent intraoperative point-cloud generation. The front end estimates tissue-aware heterogeneous physical priors using a physical graph representation, and the back end propagates these priors into diffusion-based depth completion during test-time optimization.
-      </p>
-      <div class="key-points">
-        <div>
-          <h3>THPG front end</h3>
-          <p>Maps coarse tissue-region priors to node-level elastic and viscous weights for deformation-aware tracking.</p>
+  <div class="page">
+    <main class="container-narrow">
+      <section class="hero">
+        <h1>Monocular Non-rigid Endoscopic 3D Reconstruction with Tissue-aware Heterogeneous Physical Priors</h1>
+        <p class="subtitle">Dense and scale-consistent intraoperative point cloud generation from monocular endoscopic video under continuous soft-tissue deformation.</p>
+        <div class="authors">
+          <span>Xu Wu</span><span>Author 2</span><span>Author 3</span>
         </div>
-        <div>
-          <h3>Physics-guided back end</h3>
-          <p>Injects sparse anchors, graph topology, physical attributes, and tracking states into dense depth completion.</p>
+        <div class="affiliation">Institution 1 &nbsp;&nbsp; · &nbsp;&nbsp; Institution 2</div>
+        <div class="button-row">
+          <a class="btn" href="#" onclick="return false;">📄 Paper - Coming Soon</a>
+          <a class="btn" href="https://github.com/wx775335688/Monocular-Non-rigid-Endoscopic-3D-Reconstruction">💻 Code</a>
+          <a class="btn" href="#setup">🧪 Dataset</a>
         </div>
-        <div>
-          <h3>Scale-consistent fusion</h3>
-          <p>Generates denser intraoperative point clouds while preserving sparse-anchor alignment and local topology.</p>
+        <div class="hero-figure card">
+          <img src="static/images/fig1_overview.png" alt="Overall system framework" />
         </div>
-      </div>
-    </section>
+        <p class="intro-note">Introduction: This project studies monocular non-rigid endoscopic 3D reconstruction for dense and scale-consistent intraoperative point cloud generation. The proposed method couples a tissue-aware heterogeneous physical graph (THPG) front end with a physics-guided diffusion depth completion back end, and uses structured cross-stage prior propagation to improve sparse tracking stability and dense geometric consistency.</p>
+      </section>
 
-    <section id="method" class="section">
-      <h2>Method</h2>
-      <figure class="figure-card wide">
-        <img src="assets/images/fig1.png" alt="Overview of the proposed method" />
-        <figcaption>
-          <strong>Method overview.</strong> The method extracts tissue-region priors, constructs a tissue-aware heterogeneous physical graph, performs joint pose--deformation optimization, propagates the resulting priors into diffusion-based depth completion, and fuses multi-frame dense depth into a point cloud.
-        </figcaption>
-      </figure>
-
-      <div class="two-column">
-        <figure class="figure-card">
-          <img src="assets/images/fig2.png" alt="Tissue-aware heterogeneous physical-graph front end" />
-          <figcaption>
-            <strong>Front end.</strong> Tissue-region priors are converted into relative physical weights, then integrated with graph topology updating and joint pose--deformation optimization.
-          </figcaption>
-        </figure>
-        <figure class="figure-card">
-          <img src="assets/images/fig3.png" alt="Physics-guided diffusion depth completion back end" />
-          <figcaption>
-            <strong>Back end.</strong> Sparse physical anchors, THPG topology, node-level attributes, and tracking states guide DDIM test-time depth completion.
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="experiments" class="section">
-      <h2>Experimental Platform and Data</h2>
-      <div class="two-column align-center">
-        <div>
-          <p>
-            Experiments use public endoscopic datasets and a self-collected deformable organ phantom platform. The self-collected setup includes a deformable organ phantom, a monocular endoscope, actuation modules, a display terminal, and an optical tracking system for auxiliary pose evaluation only.
-          </p>
-          <p>
-            The optical tracking system is not used as a depth sensor and is not an input to the monocular reconstruction method. It only provides reference pose information for evaluating tracking stability under controllable deformation.
-          </p>
+      <section id="abstract" class="section">
+        <h2 class="section-title">Abstract</h2>
+        <div class="section-divider"></div>
+        <div class="card panel">
+          <p>Minimally invasive surgery benefits from small incisions and reduced tissue trauma, but reliable intraoperative geometric perception remains essential for image-guided surgical applications. Monocular non-rigid SLAM can recover camera motion and sparse intraoperative structure, yet sparse surfaces provide limited geometric coverage, and dense depth completion may introduce affine scale-and-shift mismatch and cross-frame geometric inconsistency. To address these issues, we propose a monocular non-rigid endoscopic reconstruction method with tissue-aware heterogeneous physical priors.</p>
+          <p>In the front end, a tissue-aware heterogeneous physical graph (THPG) is constructed from tissue-region priors and node-level relative physical weights to support non-rigid tracking and sparse geometric recovery. In the back end, THPG topology, sparse physical anchors, and tracking states estimated by the front end are propagated as structured guidance for test-time diffusion-based depth completion. After multi-frame fusion, an auxiliary anchor-preserving refinement step suppresses residual high-frequency noise while limiting changes to sparse-anchor alignment and deformation-aware local topology.</p>
         </div>
-        <figure class="figure-card">
-          <img src="assets/images/fig6.png" alt="Self-collected deformable organ phantom platform" />
-          <figcaption>
-            <strong>Self-collected phantom platform.</strong> Monocular image stream acquisition with controlled phantom deformation and auxiliary optical-tracking reference.
-          </figcaption>
-        </figure>
-      </div>
-    </section>
+      </section>
 
-    <section id="results" class="section">
-      <h2>Results</h2>
-      <div class="table-grid">
-        <div class="result-card">
-          <h3>Front-end tracking on Hamlyn</h3>
-          <table>
-            <thead>
-              <tr><th>Sequence</th><th>NR-SLAM RMSE</th><th>Ours RMSE</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>abdominal-seq-6</td><td>2.37 mm</td><td><strong>1.66 mm</strong></td></tr>
-              <tr><td>exploration-seq-20</td><td>1.09 mm</td><td><strong>0.76 mm</strong></td></tr>
-              <tr><td>liver-seq-21</td><td>0.59 mm</td><td><strong>0.42 mm</strong></td></tr>
-            </tbody>
-          </table>
+      <section id="framework" class="section">
+        <h2 class="section-title">Framework</h2>
+        <div class="section-divider"></div>
+        <p class="section-lead">The method follows a cross-stage design in which front-end non-rigid tracking outputs are explicitly reused as structured conditions for dense reconstruction.</p>
+        <div class="columns-2">
+          <div class="card panel">
+            <img src="static/images/fig1_overview.png" alt="Framework overview" />
+            <p class="caption">Overall framework of the proposed method. The front end estimates camera pose, sparse anchors, THPG topology, node attributes, and tracking confidence, while the back end performs physics-guided diffusion depth completion and multi-frame fusion.</p>
+          </div>
+          <div class="card text-card">
+            <h3>Core modules</h3>
+            <ul>
+              <li><strong>THPG front end:</strong> maps tissue-region priors to node-level relative elastic and viscous weights.</li>
+              <li><strong>Dynamic topology update:</strong> removes edges that no longer satisfy local co-deformation assumptions.</li>
+              <li><strong>Physics-guided diffusion:</strong> injects sparse anchors, THPG topology, node attributes, and tracking confidence into DDIM optimization.</li>
+              <li><strong>Scale-consistent point cloud generation:</strong> fuses dense depth across frames and preserves anchor consistency after refinement.</li>
+            </ul>
+          </div>
         </div>
-        <div class="result-card">
-          <h3>Dense depth completion</h3>
-          <table>
-            <thead>
-              <tr><th>Dataset</th><th>Marigold-DC RMSE</th><th>Ours RMSE</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Hamlyn exp.-seq-20</td><td>2.94</td><td><strong>2.31</strong></td></tr>
-              <tr><td>SCARED D1 Seq2</td><td>3.47</td><td><strong>2.76</strong></td></tr>
-            </tbody>
-          </table>
+      </section>
+
+      <section id="setup" class="section">
+        <h2 class="section-title">Experimental Setup</h2>
+        <div class="section-divider"></div>
+        <div class="columns-2 equal">
+          <div class="card panel">
+            <img src="static/images/fig4_phantom_platform.png" alt="Experimental platform" />
+            <p class="caption">Overview of the self-collected deformable organ phantom platform. A monocular endoscope acquires the image stream, actuation modules generate controllable deformation, and an optical tracking system is used only for auxiliary pose evaluation.</p>
+          </div>
+          <div class="card text-card">
+            <h3>Datasets and evaluation</h3>
+            <ul>
+              <li><strong>Public datasets:</strong> Hamlyn abdominal-sequence-6, exploration-sequence-20, liver-seq-21, and SCARED Dataset 1 Sequence 2.</li>
+              <li><strong>Self-collected data:</strong> deformable stomach phantom and cardiac phantom sequences under controllable deformation.</li>
+              <li><strong>Front-end evaluation:</strong> RMSE, tracked-frame count, ATE, and successful tracking rate.</li>
+              <li><strong>Back-end evaluation:</strong> MAE and RMSE for dense depth completion.</li>
+            </ul>
+          </div>
         </div>
+
+        <div class="columns-2 video-grid">
+          <div class="card video-block" data-video="static/videos/teaser.mp4" data-poster="static/images/video_placeholder.svg">
+            <div class="video-placeholder">
+              <img src="static/images/video_placeholder.svg" alt="Video placeholder" />
+              <div>
+                <h3>Main Project Video</h3>
+                <p class="video-note">Place your main overview video at <code>static/videos/teaser.mp4</code>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card video-block" data-video="static/videos/phantom_platform.mp4" data-poster="static/images/video_placeholder.svg">
+            <div class="video-placeholder">
+              <img src="static/images/video_placeholder.svg" alt="Video placeholder" />
+              <div>
+                <h3>Platform / Scene Video</h3>
+                <p class="video-note">Place your self-collected platform video at <code>static/videos/phantom_platform.mp4</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="results" class="section">
+        <h2 class="section-title">Quantitative Results Comparison</h2>
+        <div class="section-divider"></div>
+        <div class="metrics">
+          <div class="metric-card card"><span>Front-end RMSE</span><strong>1.66 mm</strong><p>Hamlyn abdominal-seq-6</p></div>
+          <div class="metric-card card"><span>Front-end RMSE</span><strong>0.76 mm</strong><p>Hamlyn exploration-seq-20</p></div>
+          <div class="metric-card card"><span>Front-end RMSE</span><strong>0.42 mm</strong><p>Hamlyn liver-seq-21</p></div>
+          <div class="metric-card card"><span>Back-end RMSE</span><strong>2.76</strong><p>SCARED Dataset 1, Sequence 2</p></div>
+        </div>
+
+        <div class="table-card card">
+          <div class="table-label">Table 1 · Quantitative evaluation of front-end non-rigid tracking on Hamlyn sequences</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Abdominal RMSE↓</th>
+                  <th>Abdominal #Fr.↑</th>
+                  <th>Exploration RMSE↓</th>
+                  <th>Exploration #Fr.↑</th>
+                  <th>Liver RMSE↓</th>
+                  <th>Liver #Fr.↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>ORB-SLAM3</td><td>4.85</td><td>128</td><td>1.37</td><td>220</td><td>–</td><td>–</td></tr>
+                <tr><td>SD-DefSLAM</td><td>2.72</td><td>286</td><td>4.68</td><td>252</td><td>6.19</td><td>323</td></tr>
+                <tr><td>MCPD</td><td>–</td><td>–</td><td>1.48</td><td>350</td><td>1.55</td><td>300</td></tr>
+                <tr><td>NR-SLAM</td><td>2.37</td><td>1236</td><td>1.09</td><td>609</td><td>0.59</td><td>376</td></tr>
+                <tr class="ours"><td>Ours</td><td>1.66</td><td>1236</td><td>0.76</td><td>609</td><td>0.42</td><td>376</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-card card">
+          <div class="table-label">Table 2 · Auxiliary validation on the self-collected deformable organ phantom dataset</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Stomach ATE (mm)↓</th>
+                  <th>Stomach success rate (%)↑</th>
+                  <th>Cardiac ATE (mm)↓</th>
+                  <th>Cardiac success rate (%)↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>ORB-SLAM3</td><td>3.42</td><td>82.6</td><td>4.18</td><td>74.3</td></tr>
+                <tr><td>SD-DefSLAM</td><td>2.53</td><td>91.6</td><td>3.07</td><td>88.9</td></tr>
+                <tr><td>MCPD</td><td>2.06</td><td>95.1</td><td>2.58</td><td>93.4</td></tr>
+                <tr><td>NR-SLAM</td><td>1.74</td><td>97.9</td><td>2.21</td><td>96.5</td></tr>
+                <tr class="ours"><td>Ours</td><td>1.28</td><td>99.1</td><td>1.63</td><td>98.6</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-card card">
+          <div class="table-label">Table 3 · Dense depth completion comparison on Hamlyn and SCARED</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Hamlyn MAE↓</th>
+                  <th>Hamlyn RMSE↓</th>
+                  <th>SCARED MAE↓</th>
+                  <th>SCARED RMSE↓</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>NLSPN</td><td>3.28</td><td>5.76</td><td>4.15</td><td>6.92</td></tr>
+                <tr><td>CompletionFormer</td><td>2.87</td><td>5.12</td><td>3.64</td><td>6.35</td></tr>
+                <tr><td>VPP4DC</td><td>1.86</td><td>3.59</td><td>2.27</td><td>4.18</td></tr>
+                <tr><td>Marigold+LS</td><td>2.54</td><td>4.21</td><td>3.02</td><td>5.06</td></tr>
+                <tr><td>Marigold-DC</td><td>1.52</td><td>2.94</td><td>1.89</td><td>3.47</td></tr>
+                <tr class="ours"><td>Ours</td><td>1.18</td><td>2.31</td><td>1.45</td><td>2.76</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="qualitative" class="section">
+        <h2 class="section-title">Representative Data Samples</h2>
+        <div class="section-divider"></div>
+        <div class="gallery-grid">
+          <div class="gallery-card card">
+            <img src="static/images/dataset_endoscopic_view.png" alt="Endoscopic view" />
+            <p><strong>Endoscopic image.</strong> Representative monocular view in the surgical scene.</p>
+          </div>
+          <div class="gallery-card card">
+            <img src="static/images/dataset_phantoms_combined.png" alt="Combined phantom examples" />
+            <p><strong>Phantom examples.</strong> Deformable organ phantom models used for auxiliary evaluation.</p>
+          </div>
+          <div class="gallery-card card">
+            <img src="static/images/dataset_stomach_phantom.png" alt="Stomach phantom" />
+            <p><strong>Stomach phantom.</strong> Controlled-deformation sequence used for tracking validation.</p>
+          </div>
+          <div class="gallery-card card">
+            <img src="static/images/dataset_cardiac_phantom.png" alt="Cardiac phantom" />
+            <p><strong>Cardiac phantom.</strong> Periodic deformation example for dynamic-scene evaluation.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="analysis" class="section">
+        <h2 class="section-title">Ablation & Comparative Analysis</h2>
+        <div class="section-divider"></div>
+        <p class="section-lead">This section mirrors the compact multi-panel analysis area in your reference page, but uses ablation summaries more suitable for your paper.</p>
+        <div class="analysis-grid">
+          <div class="analysis-card card">
+            <h3>Cross-stage Benefit</h3>
+            <div class="table-wrap">
+              <table class="mini-table">
+                <thead><tr><th>Variant</th><th>Depth RMSE↓</th></tr></thead>
+                <tbody>
+                  <tr><td>Front-end only</td><td>–</td></tr>
+                  <tr><td>+ vanilla diffusion</td><td>3.18</td></tr>
+                  <tr class="ours"><td>+ physics-guided diffusion</td><td>2.76</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Explicit cross-stage prior propagation improves dense recovery quality beyond a simple front-end + vanilla diffusion cascade.</p>
+          </div>
+          <div class="analysis-card card">
+            <h3>Front-end Ablation</h3>
+            <div class="table-wrap">
+              <table class="mini-table">
+                <thead><tr><th>Variant</th><th>RMSE↓</th></tr></thead>
+                <tbody>
+                  <tr><td>NR-SLAM baseline</td><td>0.59</td></tr>
+                  <tr><td>Homogeneous graph</td><td>0.56</td></tr>
+                  <tr><td>w/o topo update</td><td>0.50</td></tr>
+                  <tr class="ours"><td>Full THPG</td><td>0.42</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>THPG heterogeneity and dynamic topology update both contribute to better local structural stability.</p>
+          </div>
+          <div class="analysis-card card">
+            <h3>Back-end Prior Ablation</h3>
+            <div class="table-wrap">
+              <table class="mini-table">
+                <thead><tr><th>Variant</th><th>RMSE↓</th></tr></thead>
+                <tbody>
+                  <tr><td>Anchor only</td><td>3.23</td></tr>
+                  <tr><td>+ topology</td><td>3.05</td></tr>
+                  <tr><td>+ physical attrs</td><td>2.91</td></tr>
+                  <tr class="ours"><td>+ conf. schedule</td><td>2.76</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Adding richer front-end priors progressively improves the back-end depth completion stage.</p>
+          </div>
+          <div class="analysis-card card">
+            <h3>Energy-term Ablation</h3>
+            <div class="table-wrap">
+              <table class="mini-table">
+                <thead><tr><th>Variant</th><th>RMSE↓</th></tr></thead>
+                <tbody>
+                  <tr><td>w/o Egeo</td><td>3.05</td></tr>
+                  <tr><td>w/o Ealign</td><td>3.35</td></tr>
+                  <tr><td>w/o Ebound</td><td>2.85</td></tr>
+                  <tr class="ours"><td>Full objective</td><td>2.76</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Scale alignment and graph-based geometric consistency are particularly important in the complete objective.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <p>This page is intentionally styled to resemble the example academic single-page project website you provided, while adapting the section content to your endoscopic reconstruction project.</p>
+        <p>Before publishing, replace the placeholder co-author and affiliation text, and update the Code/Dataset/Paper links as needed.</p>
       </div>
+    </main>
+  </div>
 
-      <div class="two-column">
-        <figure class="figure-card">
-          <img src="assets/images/fig4.png" alt="Qualitative front-end non-rigid tracking results" />
-          <figcaption>
-            <strong>Front-end qualitative comparison.</strong> Representative non-rigid tracking examples from public sequences and the self-collected phantom data.
-          </figcaption>
-        </figure>
-        <figure class="figure-card">
-          <img src="assets/images/fig5.png" alt="Dense depth completion qualitative comparison" />
-          <figcaption>
-            <strong>Dense depth qualitative comparison.</strong> Representative sparse-depth completion examples under challenging endoscopic conditions.
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="video-demo" class="section narrow callout">
-      <h2>Video Demo</h2>
-      <p>
-        The original video files are not included because they are large. Put demo videos into <code>docs/assets/videos/</code> and update the file names in this section when the repository is ready.
-      </p>
-      <div class="video-placeholder">
-        <span>Recommended files: <code>overview_demo.mp4</code>, <code>tracking_demo.mp4</code>, <code>dense_reconstruction_demo.mp4</code></span>
-      </div>
-    </section>
-
-    <section id="resources" class="section narrow">
-      <h2>Resources</h2>
-      <ul class="resource-list">
-        <li><a href="assets/paper/paper.pdf">Paper PDF</a></li>
-        <li><a href="assets/paper/paper.tex">LaTeX source used for this project page</a></li>
-        <li><a href="assets/paper/references.bib">Reference BibTeX file</a></li>
-        <li><a href="assets/videos/README.md">Video placement guide</a></li>
-      </ul>
-    </section>
-
-    <section id="citation" class="section narrow">
-      <h2>Citation</h2>
-      <p>Replace the author and venue fields after the paper information is finalized.</p>
-      <pre><code>@article{author2026monocular,
-  title={Monocular Non-rigid Endoscopic 3D Reconstruction with Tissue-aware Heterogeneous Physical Priors},
-  author={Author Name},
-  journal={Under review},
-  year={2026}
-}</code></pre>
-    </section>
-  </main>
-
-  <footer>
-    <p>Project page for monocular non-rigid endoscopic 3D reconstruction. Built as a static GitHub Pages-ready <code>docs/</code> folder.</p>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
+  <script src="static/js/main.js"></script>
 </body>
 </html>

@@ -1,36 +1,26 @@
-# GitHub Pages project page
+# Styled Project Page Docs Folder
 
-This `docs/` folder is ready to be used as a GitHub Pages static project page.
+This `docs/` folder is a GitHub Pages-ready project page styled to be closer to the sample academic page you provided.
 
-## Recommended repository layout
+## Deploy
+1. Put this `docs/` folder in the root of your GitHub repository.
+2. Go to **Settings -> Pages**.
+3. Choose **Deploy from a branch**.
+4. Select your branch and folder **/docs**.
+5. Save and wait for deployment.
 
-```text
-repository-root/
-├── code/
-├── data/
-├── docs/
-│   ├── index.html
-│   ├── assets/
-│   │   ├── css/style.css
-│   │   ├── js/main.js
-│   │   ├── images/fig1.png ... fig6.png
-│   │   ├── paper/paper.pdf
-│   │   └── videos/
-│   └── README.md
-└── README.md
-```
+## Included content
+- Nerfies-like single-page academic project layout
+- Hero section with title, authors, and buttons
+- One overall system architecture figure
+- Experimental setup section with your self-collected platform scene figure
+- Representative dataset image gallery
+- Multiple quantitative comparison and ablation tables
+- Video placeholders for later replacement
 
-## GitHub Pages deployment
-
-1. Put this `docs/` folder at the root of your GitHub repository.
-2. Open **Settings → Pages**.
-3. Set **Source** to **Deploy from a branch**.
-4. Select the `main` branch and `/docs` folder.
-5. Save. GitHub will generate a project page URL after deployment.
-
-## Items to update before public release
-
-- Replace `Author Name · Institution` in `index.html` with final author and affiliation information.
-- Replace the BibTeX placeholder after the paper is accepted or formally released.
-- Add actual demo videos to `assets/videos/` and update the Video Demo section.
-- Add the final code repository link to the button row if the project page is hosted separately from the code.
+## Video filenames
+Place videos in `static/videos/` as:
+- `teaser.mp4`
+- `phantom_platform.mp4`
+- `tracking_demo.mp4`
+- `reconstruction_demo.mp4`
