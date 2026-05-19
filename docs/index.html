@@ -9,6 +9,42 @@
   <meta property="og:image" content="static/images/fig1_overview.png" />
   <title>Monocular Non-rigid Endoscopic 3D Reconstruction</title>
   <link rel="stylesheet" href="static/css/style.css" />
+  <style>
+    /* Keep the platform video inside the page card after playback starts. */
+    .video-grid {
+      max-width: 860px;
+      margin: 28px auto 0;
+    }
+
+    .fixed-video-block {
+      overflow: hidden;
+      padding: 16px;
+    }
+
+    .project-video,
+    .video-block video {
+      display: block;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      max-height: 460px !important;
+      object-fit: contain;
+      border-radius: 16px;
+      background: #000;
+    }
+
+    .fixed-video-block .video-note {
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .project-video,
+      .video-block video {
+        max-height: 300px !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="top-nav">
@@ -31,7 +67,7 @@
         <h1>Monocular Non-rigid Endoscopic 3D Reconstruction with Tissue-aware Heterogeneous Physical Priors</h1>
         <p class="subtitle">Dense and scale-consistent intraoperative point cloud generation from monocular endoscopic video under continuous soft-tissue deformation.</p>
         <div class="authors">
-          <span>Xu Wu</span><span>Author 2</span><span>Author 3</span>
+          <span>Guanyuan Feng</span><span>Xu Wu</span><span>Author 3</span>
         </div>
         <div class="affiliation">Institution 1 &nbsp;&nbsp; · &nbsp;&nbsp; Institution 2</div>
         <div class="button-row">
@@ -95,14 +131,12 @@
         </div>
 
         <div class="video-grid">
-          <div class="card video-block" data-video="static/videos/phantom_platform.mp4" data-poster="static/images/video_placeholder.svg">
-            <div class="video-placeholder">
-              <img src="static/images/video_placeholder.svg" alt="Video placeholder" />
-              <div>
-                <h3>Platform / Scene Video</h3>
-                <p class="video-note">Place your self-collected platform video at <code>static/videos/phantom_platform.mp4</code>.</p>
-              </div>
-            </div>
+          <div class="card video-block fixed-video-block">
+            <video class="project-video" controls preload="metadata" playsinline poster="static/images/video_placeholder.svg">
+              <source src="static/videos/phantom_platform.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p class="video-note">Platform / scene video. Keep this file compressed before deploying to GitHub Pages.</p>
           </div>
         </div>
       </section>
